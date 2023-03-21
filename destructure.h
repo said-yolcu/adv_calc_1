@@ -3,6 +3,6 @@
 
 #include "definitions.h"
 
-void tokenize(Token *root, char *line, int begin);
+void tokenize(Token *head, char *line, int begin);
 
 #endif

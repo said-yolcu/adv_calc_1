@@ -7,13 +7,15 @@
 
 char functions[6][4] = {"xor", "ls", "rs", "lr", "rr", "not"};
 
-void tokenize(Token *root, char *line, int begin)
+// Divide the "line" into tokens and store these
+// tokens into the linkedlist with "head" as head
+void tokenize(Token *head, char *line, int begin)
 {
     int i;
     printf("destructure line %d\n", 13);
 
     // Current token
-    Token *curr = root;
+    Token *curr = head;
 
     // Traverse the line
     for (i = begin; line[i] != NULL_CHAR; i++)
@@ -134,6 +136,12 @@ void tokenize(Token *root, char *line, int begin)
 
         // First create storage, then move to next
         curr->next = (Token *)malloc(sizeof(Token));
+        curr->next->prev = curr;
         curr = curr->next;
     }
+}
+
+void parse(Node* root, Token* head)
+{
+
 }

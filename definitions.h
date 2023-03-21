@@ -18,4 +18,13 @@ typedef struct Tokens
     char name[MAX_NAME];
 
     struct Tokens *next; // Next token
+    struct Tokens *prev; // Previous token
 } Token;
+
+typedef struct Nodes
+{
+    Token *this;         // Pointer to the token
+                         // this node represents
+    struct Nodes *left;  // Node on the left
+    struct Nodes *right; // Node on the rigth
+} Node;

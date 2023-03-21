@@ -6,9 +6,10 @@
 // #include "definitions.h"
 #include "destructure.h"
 
-Token *root;
+Token *head;
 
-void prompter(char *);
+void prompter(char *fullLine);
+void freeTokenStorage(Token *head);
 
 int main(int argc, char const *argv[])
 {
@@ -21,20 +22,21 @@ int main(int argc, char const *argv[])
     printf("You have typed: %s, it has length %d\n",
            fullLine, (int)strlen(fullLine));
 
-    // Give storage to root
-    root = (Token *)malloc(sizeof(Token));
+    // Give storage to head
+    head = (Token *)malloc(sizeof(Token));
 
-    tokenize(root, fullLine, 0);
+    tokenize(head, fullLine, 0);
 
     printf("line %d\n", 26);
 
-    while (root != NULL)
+    while (head != NULL)
     {
         printf("line %d\n", 30);
-        printf("type %d: <%s>\n", root->type, root->name);
-        root = root->next;
+        printf("type %d: <%s>\n", head->type, head->name);
+        head = head->next;
     }
 
+    freeTokenStorage(head);
     return 0;
 }
 
@@ -48,4 +50,17 @@ void prompter(char *fullLine)
     int len = (int)strlen(fullLine);
 
     fullLine[len - 1] = NULL_CHAR;
+}
+
+void freeTokenStorage(Token *head)
+{
+    if (head != NULL && head->next != NULL)
+    {
+        freeTokenStorage(head->next);
+    }
+
+    if (head != NULL)
+    {
+        free(head);
+    }
 }
