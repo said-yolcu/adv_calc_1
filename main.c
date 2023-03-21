@@ -2,8 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define LINE_LENGTH 100 // Including the terminating nullchar
-#define NULL_CHAR '\0'
+// definitions is already included in destructure.h
+// #include "definitions.h"
+#include "destructure.h"
+
+Token *root;
 
 void prompter(char *);
 
@@ -18,6 +21,19 @@ int main(int argc, char const *argv[])
     printf("You have typed: %s, it has length %d\n",
            fullLine, (int)strlen(fullLine));
 
+    // Give storage to root
+    root = (Token *)malloc(sizeof(Token));
+
+    tokenize(root, fullLine, 0);
+
+    printf("line %d\n", 26);
+
+    while (root != NULL)
+    {
+        printf("line %d\n", 30);
+        printf("type %d: <%s>\n", root->type, root->name);
+        root = root->next;
+    }
 
     return 0;
 }
