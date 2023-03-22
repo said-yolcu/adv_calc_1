@@ -27,13 +27,24 @@ void tokenize(Token *head, char *line, int begin)
         if (line[i] == '+' || line[i] == '*' || line[i] == '-' || line[i] == '&' || line[i] == '|')
         {
             printf("destructure line %d\n", 22);
-            curr->type = OPR;
+
+            // Allocate storage for "this" node
+            curr->this = (Node *)malloc(sizeof(Node));
+
+            // Left and right nodes are currently null
+            curr->this->left = NULL;
+            curr->this->right = NULL;
+
+            // Set the type
+            curr->this->type = OPR;
 
             char str[2];
             str[0] = line[i];
 
-            strcpy(curr->name, str);
+            // Set the name
+            strcpy(curr->this->name, str);
 
+            // Next token is currently null
             curr->next = NULL;
 
             printf("destructure line %d\n", 30);
@@ -42,13 +53,24 @@ void tokenize(Token *head, char *line, int begin)
         else if (line[i] == '(' || line[i] == ')')
         {
             printf("destructure line %d\n", 36);
-            curr->type = PAR;
+
+            // Allocate storage for "this" node
+            curr->this = (Node *)malloc(sizeof(Node));
+
+            // Left and right nodes are currently null
+            curr->this->left = NULL;
+            curr->this->right = NULL;
+
+            // Set the type
+            curr->this->type = PAR;
 
             char str[2];
             str[0] = line[i];
 
-            strcpy(curr->name, str);
+            // Set the name
+            strcpy(curr->this->name, str);
 
+            // Next token is currently null
             curr->next = NULL;
 
             printf("destructure line %d\n", 45);
@@ -57,13 +79,24 @@ void tokenize(Token *head, char *line, int begin)
         else if (line[i] == ',')
         {
             printf("destructure line %d\n", 50);
-            curr->type = COM;
+
+            // Allocate storage for "this" node
+            curr->this = (Node *)malloc(sizeof(Node));
+
+            // Left and right nodes are currently null
+            curr->this->left = NULL;
+            curr->this->right = NULL;
+
+            // Set the type
+            curr->this->type = COM;
 
             char str[2];
             str[0] = line[i];
 
-            strcpy(curr->name, str);
+            // Set the name
+            strcpy(curr->this->name, str);
 
+            // Next token is currently null
             curr->next = NULL;
 
             printf("destructure line %d\n", 60);
@@ -72,6 +105,14 @@ void tokenize(Token *head, char *line, int begin)
         else if (('a' <= line[i] && line[i] <= 'z') || ('A' <= line[i] && line[i] <= 'Z'))
         {
             printf("destructure line %d\n", 64);
+
+            // Allocate storage for "this" node
+            curr->this = (Node *)malloc(sizeof(Node));
+
+            // Left and right nodes are currently null
+            curr->this->left = NULL;
+            curr->this->right = NULL;
+
             int start = i;
             int len = 0;
 
@@ -83,24 +124,26 @@ void tokenize(Token *head, char *line, int begin)
 
             bool is_var = true; // is variable
 
-            strncpy(curr->name, line + start, len);
+            // Set the name
+            strncpy(curr->this->name, line + start, len);
 
             for (int ind = 0; ind < sizeof(functions) / sizeof(functions[0]); ind++)
             {
-                if (strcmp(functions[ind], curr->name) == 0)
+                if (strcmp(functions[ind], curr->this->name) == 0)
                 {
                     is_var = false;
                     break;
                 }
             }
 
+            // Set the type
             if (is_var)
             {
-                curr->type = VAR;
+                curr->this->type = VAR;
             }
             else
             {
-                curr->type = FUN;
+                curr->this->type = FUN;
             }
 
             curr->next = NULL;
@@ -114,6 +157,14 @@ void tokenize(Token *head, char *line, int begin)
         {
 
             printf("destructure line %d\n", 105);
+
+            // Allocate storage for "this" node
+            curr->this = (Node *)malloc(sizeof(Node));
+
+            // Left and right nodes are currently null
+            curr->this->left = NULL;
+            curr->this->right = NULL;
+
             int start = i;
             int len = 0;
 
@@ -123,9 +174,11 @@ void tokenize(Token *head, char *line, int begin)
                 len++;
             }
 
-            curr->type = NUM;
+            // Set the type
+            curr->this->type = NUM;
 
-            strncpy(curr->name, line + start, len);
+            // Set the name
+            strncpy(curr->this->name, line + start, len);
 
             curr->next = NULL;
 
@@ -141,7 +194,6 @@ void tokenize(Token *head, char *line, int begin)
     }
 }
 
-void parse(Node* root, Token* head)
+void parse(Node *root, Token *head)
 {
-
 }
