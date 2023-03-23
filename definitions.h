@@ -5,6 +5,10 @@
 #define NULL_CHAR '\0'
 #define MAX_NAME 20 // Max length of the variable name. May reset later
 
+// Cannot define a global variable in a header that would be included in multiple
+// files. Multiple *definitions* is not allowed. But we can *declare* it multiple
+// times.
+
 // Node structure
 typedef struct Nodes
 {
@@ -12,34 +16,30 @@ typedef struct Nodes
     {
         VAR, // 0 Variable
         OPR, // 1 Operator: + * - & |
-        FUN, // 2 Function: xor, ls, rs, lr, rr, not
-        COM, // 3 Comma
-        PAR, // 4 Parantheses
-        NUM  // 5 Number
+        BIN, // 2 Binary Function: xor, ls, rs, lr, rr
+        UNA, // 3 Unary Function: not
+        COM, // 4 Comma
+        PAR, // 5 Parantheses
+        NUM  // 6 Number
     } type;
 
     char name[MAX_NAME];
 
     struct Nodes *left;  // Node on the left
     struct Nodes *right; // Node on the rigth
+
+    struct Tokens *testLeft;  // Token head on the left
+    struct Tokens *testRight; // Token head on the right
 } Node;
 
 // Token structure, each token consists of a Node tree
 typedef struct Tokens
 {
-    /*
-    enum
-    {
-        VAR, // 0 Variable
-        OPR, // 1 Operator: + * - & |
-        FUN, // 2 Function: xor, ls, rs, lr, rr, not
-        COM, // 3 Comma
-        PAR, // 4 Parantheses
-        NUM  // 5 Number
-    } type;
+    int layer;
 
-    char name[MAX_NAME];
-    */
+    // Whichth token from the beginning, starting from 0
+    int number;
+
     struct Tokens *next; // Next token
     struct Tokens *prev; // Previous token
 

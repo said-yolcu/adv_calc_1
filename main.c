@@ -8,6 +8,7 @@
 #include "destructure.h"
 
 // Linked list of tokens, i.e. linked list of Node trees
+// Head always points to the head of the linkedlist
 Token *head;
 
 void prompter(char *fullLine);
@@ -38,12 +39,47 @@ int main(int argc, char const *argv[])
 
     printf("line %d\n", 26);
 
-    while (head != NULL && head->this != NULL)
+    int numToken = 0;
+
+    // Create and intermediate token pointer to traverse over the list
+    Token *token = head;
+
+    while (token != NULL && token->this != NULL)
     {
+        numToken++;
+
         printf("line %d\n", 30);
-        printf("type %d: <%s>\n", head->this->type, head->this->name);
-        head = head->next;
+        printf("type %d: <%s> with number %d and layer %d\n", token->this->type,
+               token->this->name, token->number, token->layer);
+        token = token->next;
     }
+
+    Node *root = parse(head, 0, numToken - 1);
+
+    // Print root node
+    printf("root type %d: <%s>\n",
+           root->type, root->name);
+
+    Token *leftHead = root->testLeft;
+    Token *rightHead = root->testRight;
+
+    while (leftHead != NULL && leftHead->this != NULL)
+    {
+        printf("left type %d: <%s>\n",
+               leftHead->this->type, leftHead->this->name);
+
+        leftHead = leftHead->next;
+    }
+
+    while (rightHead != NULL && rightHead->this != NULL)
+    {
+        printf("right type %d: <%s>\n",
+               rightHead->this->type, rightHead->this->name);
+
+        rightHead = rightHead->next;
+    }
+
+    printf("line 74%s\n", "");
 
     freeTokenStorage(head);
     return 0;

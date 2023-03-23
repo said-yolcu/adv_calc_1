@@ -5,6 +5,9 @@
 
 void freeNodeStorage(Node *root);
 
+// The structure of these functions need to be changed, because the nodes will
+// finally be collected under a single Token
+
 void freeTokenStorage(Token *head)
 {
     if (head != NULL && head->next != NULL)
@@ -16,7 +19,8 @@ void freeTokenStorage(Token *head)
     if (head != NULL)
     {
         // Free this node tree
-        freeNodeStorage(head->this);
+        // freeNodeStorage(head->this);
+        free(head->this);
 
         // Free "head" token
         free(head);
