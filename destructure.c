@@ -269,8 +269,8 @@ Node *parse(Token *tail, int startLayer, int maxLayer, int until)
         printf("destructure line 267 %s\n", "");
 
         // Check for each operator
-        // for (int opr = 0; opr < sizeof(operators) / sizeof(operators[0]); opr++)
-        for (int opr = 0; opr < 1; opr++)
+        for (int opr = 0; opr < sizeof(operators) / sizeof(operators[0]); opr++)
+        // for (int opr = 0; opr < 1; opr++)
         {
 
             printf("destructure line 274 %s\n", "");

@@ -6,6 +6,7 @@
 #include "definitions.h"
 #include "free.h"
 #include "destructure.h"
+#include "utilities.h"
 
 // Linked list of tokens, i.e. linked list of Node trees
 // Head always points to the head of the linkedlist
@@ -87,7 +88,7 @@ int main(int argc, char const *argv[])
     // }
 
     // Print node tree
-    printNodeTree(root, "");
+    printNodeTree(root, "", 0);
 
     printf("line 74%s\n", "");
 
