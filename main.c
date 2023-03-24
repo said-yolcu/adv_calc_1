@@ -54,30 +54,40 @@ int main(int argc, char const *argv[])
         token = token->next;
     }
 
-    Node *root = parse(head, 0, numToken - 1);
+    Token *tail = token->prev;
+
+    printf("tail is #%d with type %d and name %s\n", tail->number,
+           tail->this->type, tail->this->name);
+
+    // Do not forget, we are transversing the linked list
+    // backwards while parsing
+    Node *root = parse(tail, 0, 0, head->number);
 
     // Print root node
-    printf("root type %d: <%s>\n",
-           root->type, root->name);
+    // printf("root type %d: <%s>\n",
+    //        root->type, root->name);
 
-    Token *leftHead = root->testLeft;
-    Token *rightHead = root->testRight;
+    // Token *leftHead = root->testLeft;
+    // Token *rightHead = root->testRight;
 
-    while (leftHead != NULL && leftHead->this != NULL)
-    {
-        printf("left type %d: <%s>\n",
-               leftHead->this->type, leftHead->this->name);
+    // while (leftHead != NULL && leftHead->this != NULL)
+    // {
+    //     printf("left type %d: <%s>\n",
+    //            leftHead->this->type, leftHead->this->name);
 
-        leftHead = leftHead->next;
-    }
+    //     leftHead = leftHead->next;
+    // }
 
-    while (rightHead != NULL && rightHead->this != NULL)
-    {
-        printf("right type %d: <%s>\n",
-               rightHead->this->type, rightHead->this->name);
+    // while (rightHead != NULL && rightHead->this != NULL)
+    // {
+    //     printf("right type %d: <%s>\n",
+    //            rightHead->this->type, rightHead->this->name);
 
-        rightHead = rightHead->next;
-    }
+    //     rightHead = rightHead->next;
+    // }
+
+    // Print node tree
+    printNodeTree(root, "");
 
     printf("line 74%s\n", "");
 

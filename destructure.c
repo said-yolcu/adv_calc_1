@@ -4,7 +4,8 @@
 #include <stdio.h>
 
 #include "definitions.h"
-// #include "simpleMath.h"
+#include "utilities.h"
+
 
 char functions[5][4] = {"xor", "ls", "rs", "lr", "rr"};
 char unaFunc[1][4] = {"not"};
@@ -251,10 +252,11 @@ void tokenize(Token *head, char *line, int begin)
 
 // Out of the tokens between Token "head" and Token with the number field "until"
 // create a node tree, then return the root node of this tree
-Node *parse(Token *head, int maxLayer, int until)
+// We should start from "tail" and move BACKWARDS
+Node *parse(Token *tail, int startLayer, int maxLayer, int until)
 {
     Token *curr;
-    int from = head->number;
+    int from = tail->number;
 
     printf("destructure line 259 %s\n", "");
 
@@ -273,27 +275,33 @@ Node *parse(Token *head, int maxLayer, int until)
 
             printf("destructure line 274 %s\n", "");
 
-            // Initially points to head at each iteration
-            curr = head;
+            // Initially points to tail at each iteration
+            curr = tail;
 
-            printf("destructure line 279 %s\n", "");
+            if (curr->number == until)
+            {
+                printf("destructure line 282 %s\n", "");
+                return curr->this;
+            }
+
+            printf("destructure line 286 %s\n", "");
 
             // Move to the next token until the token on the searched layer
             // is encountered
             while (curr != NULL)
             {
 
-                printf("destructure line 286 %s\n", "");
+                printf("destructure line 293 %s\n", "");
 
                 // We have iterated the last token
-                if (curr->number > until)
+                if (curr->number < until)
                 {
 
-                    printf("destructure line 292 %s\n", "");
+                    printf("destructure line 299 %s\n", "");
                     break;
                 }
 
-                printf("destructure line 296 %s\n", "");
+                printf("destructure line 303 %s\n", "");
 
                 // Check that its on the current layer
                 if (curr->layer == curLayer)
@@ -301,7 +309,7 @@ Node *parse(Token *head, int maxLayer, int until)
                     printf("curr->layer: %d, curLayer: %d\n", curr->layer, curLayer);
                     printf("curr->number: %d\n", curr->number);
 
-                    printf("destructure line 302 %s\n", "");
+                    printf("destructure line 311 %s\n", "");
 
                     printf("curr->this->name: %s, operators[opr]: %s\n",
                            curr->this->name, operators[opr]);
@@ -310,36 +318,36 @@ Node *parse(Token *head, int maxLayer, int until)
                     if (strcmp(curr->this->name, operators[opr]) == 0)
                     {
 
-                        printf("destructure line 308 %s\n", "");
+                        printf("destructure line 320 %s\n", "");
 
                         if (curr->prev == NULL)
                         {
 
-                            printf("destructure line 313 %s\n", "");
+                            printf("destructure line 325 %s\n", "");
 
                             printf("Error! No expression before operator %s\n", operators[opr]);
                             return NULL;
                         }
 
-                        // Node *left = parse(head, maxLayer, curr->prev->number);
+                        Node *left = parse(curr->prev, startLayer, maxLayer, until);
                         // For testing purposes
-                        Token *testLeft = head;
+                        // Token *testLeft = head;
 
-                        printf("destructure line 323 %s\n", "");
+                        printf("destructure line 334 %s\n", "");
 
                         if (curr->next == NULL)
                         {
-                            printf("destructure line 327 %s\n", "");
+                            printf("destructure line 339 %s\n", "");
 
                             printf("Error! No expression after operator %s\n", operators[opr]);
                             return NULL;
                         }
 
-                        // Node *right = parse(curr->next, maxLayer, until);
+                        Node *right = parse(tail, startLayer, maxLayer, curr->next->number);
                         // For testing purposes
-                        Token *testRight = curr->next;
+                        // Token *testRight = curr->next;
 
-                        printf("destructure line 337 %s\n", "");
+                        printf("destructure line 349 %s\n", "");
 
                         // Cut the connections between left,this token , and right
                         curr->prev->next = NULL;
@@ -347,31 +355,32 @@ Node *parse(Token *head, int maxLayer, int until)
                         curr->next->prev = NULL;
                         curr->next = NULL;
 
-                        printf("destructure line 345 %s\n", "");
+                        printf("destructure line 357 %s\n", "");
 
                         // Connect the branch to the left and right
-                        // curr->this->left = left;
-                        // curr->this->right = right;
+                        curr->this->left = left;
+                        curr->this->right = right;
 
                         // For testing purposes
-                        curr->this->testLeft = testLeft;
-                        curr->this->testRight = testRight;
+                        // curr->this->testLeft = testLeft;
+                        // curr->this->testRight = testRight;
 
-                        printf("destructure line 355 %s\n", "");
+                        printf("destructure line 367 %s\n", "");
 
                         printf("curr this is %s\n", curr->this->name);
                         return curr->this;
                     }
 
-                    printf("destructure line 361 %s\n", "");
+                    printf("destructure line 374 %s\n", "");
                 }
 
-                printf("destructure line 364 %s\n", "");
-                curr = curr->next;
+                printf("destructure line 377 %s\n", "");
+                curr = curr->prev;
 
-                printf("destructure line 367 %s\n", "");
+                printf("destructure line 380 %s\n", "");
             }
         }
+        return NULL;
     }
 }
 
@@ -391,14 +400,3 @@ int parseUntil(Token *layHead, int curLayer, int untilToken)
     }
 }
 
-int max(int a, int b)
-{
-    if (a > b)
-    {
-        return a;
-    }
-    else
-    {
-        return b;
-    }
-}
