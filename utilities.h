@@ -5,7 +5,7 @@
 
 #include "definitions.h"
 
-void printNodeTree(Node *root, char *prefix, int depth);
+void printNodeTree(Node *root, int depth);
 int max(int a, int b);
 
 #endif

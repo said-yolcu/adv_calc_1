@@ -6,17 +6,16 @@
 #include "definitions.h"
 #include "utilities.h"
 
-
 char functions[5][4] = {"xor", "ls", "rs", "lr", "rr"};
 char unaFunc[1][4] = {"not"};
 
-char operators[11][4] = {"|", "&", "+", "-", "*"};
+char operators[5][4] = {"|", "&", "+", "-", "*"};
 
 int max(int a, int b);
 
 // Divide the "line" into tokens and store these
 // tokens into the linkedlist with "head" as head
-void tokenize(Token *head, char *line, int begin)
+int tokenize(Token *head, char *line, int begin)
 {
     int i;
     printf("destructure line %d\n", 13);
@@ -248,6 +247,8 @@ void tokenize(Token *head, char *line, int begin)
         curr->next->prev = curr;
         curr = curr->next;
     }
+
+    return maxLayer;
 }
 
 // Out of the tokens between Token "head" and Token with the number field "until"
@@ -261,14 +262,14 @@ Node *parse(Token *tail, int startLayer, int maxLayer, int until)
     printf("destructure line 259 %s\n", "");
 
     // Iterate over each layer
-    // for (int curLayer = 0; curLayer <= maxLayer; curLayer++)
+    for (int curLayer = startLayer; curLayer <= maxLayer; curLayer++)
     // Loop it once for test purposes
-    for (int curLayer = 0; curLayer < 1; curLayer++)
+    // for (int curLayer = 0; curLayer < 1; curLayer++)
     {
 
         printf("destructure line 267 %s\n", "");
 
-        // Check for each operator
+        // Parse for each operator
         for (int opr = 0; opr < sizeof(operators) / sizeof(operators[0]); opr++)
         // for (int opr = 0; opr < 1; opr++)
         {
@@ -303,7 +304,7 @@ Node *parse(Token *tail, int startLayer, int maxLayer, int until)
 
                 printf("destructure line 303 %s\n", "");
 
-                // Check that its on the current layer
+                // Parse it if it is on the current layer, do not parse otherwise
                 if (curr->layer == curLayer)
                 {
                     printf("curr->layer: %d, curLayer: %d\n", curr->layer, curLayer);
@@ -375,28 +376,182 @@ Node *parse(Token *tail, int startLayer, int maxLayer, int until)
                 }
 
                 printf("destructure line 377 %s\n", "");
+
+                // Point to the previous token
                 curr = curr->prev;
 
                 printf("destructure line 380 %s\n", "");
             }
         }
+
+        // Initially points to tail at each iteration
+        curr = tail;
+
+        printf("curr->this->name: %s, curr->number %d\n",
+               curr->this->name, curr->number);
+
+        printf("destructure line 388 %s\n", "");
+
+        // Parse for parantheses , this includes functions
+        while (curr != NULL && curr->number >= until)
+        {
+            printf("destructure line 393 %s\n", "");
+
+            // We have iterated the last token
+            if (curr->number < until)
+            {
+                printf("destructure line 399 %s\n", "");
+
+                printf("Error! No opening paranthesis found %s\n", "");
+                return NULL;
+            }
+            printf("destructure line 406 %s\n", "");
+
+            // If it is a paranthesis
+            if (curr->this->type == PAR)
+            {
+                printf("destructure line 412 %s\n", "");
+
+                // It should be an closing paranthesis, we are going backwards
+                if (strcmp(curr->this->name, ")") != 0)
+                {
+                    printf("destructure line 417 %s\n", "");
+
+                    printf("Error! Should be an closing paranthesis %s\n", "");
+                    return NULL;
+                }
+
+                // Find the opening paranthesis
+                Token *open = curr;
+
+                printf("destructure line 426 %s\n", "");
+
+                while (open != NULL)
+                {
+                    printf("destructure line 430 %s\n", "");
+
+                    printf("Opening paranthesis candidate #%d, %s\n", open->number,
+                           open->this->name);
+
+                    printf("type: %d, name: %s, layer: %d, curLayer: %d\n", open->this->type,
+                           open->this->name, open->layer, curLayer);
+
+                    // First opening paranthesis on the current layer
+                    if (open->this->type == PAR && strcmp(open->this->name, "(") == 0 &&
+                        open->layer == curLayer)
+                    {
+                        printf("destructure line 436 %s\n", "");
+
+                        int newUntil = open->next->number;
+
+                        // Check whether it is a binary function
+                        // or a unary function
+                        // or a pure paranthesis
+                        // Binary Function case
+                        if (open->prev != NULL && open->prev->this->type == BIN)
+                        {
+                            printf("destructure line 446 %s\n", "");
+
+                            Node *funNode = open->prev->this;
+
+                            printf("destructure line 450 %s\n", "");
+
+                            printf("Comma candidate #%d, <%s>\n", open->number,
+                                   open->this->name);
+
+                            // Look between the current position of *open* and
+                            // *current* for the comma
+                            printf("open->number: %d, curr->number: %d\n",
+                                   open->number, curr->number);
+                            while (open != NULL && open->number < curr->number)
+                            {
+                                printf("Comma candidate #%d, <%s><%s>\n", open->number,
+                                       open->this->name, ",");
+
+                                printf("open->number: %d, curr->number: %d\n",
+                                       open->number, curr->number);
+
+                                printf("destructure line 456 %s\n", "");
+
+                                printf("type name :$%d$ $%d$ open layer: %d, curLayer: %d\n", open->this->type == COM,
+                                       strcmp(open->this->name, ",") == 0, open->layer, curLayer);
+
+                                // Look for the comma
+                                if (open->this->type == COM &&
+                                    strcmp(open->this->name, ",") == 0 &&
+                                    // Comma is one layer above the parantheses
+                                    open->layer == curLayer + 1)
+                                {
+                                    printf("destructure line 463 %s\n", "");
+
+                                    // Left branch is in parantheses, therefore 1 layer above
+                                    Node *left = parse(open->prev, curLayer + 1, maxLayer, newUntil);
+
+                                    printf("destructure line 468 %s\n", "");
+
+                                    // Right branch is in parantheses, therefore 1 layer above
+                                    Node *right = parse(curr->prev, curLayer + 1, maxLayer, open->next->number);
+
+                                    printf("destructure line 473 %s\n", "");
+
+                                    // Connect the branch to the left and right
+                                    funNode->left = left;
+                                    funNode->right = right;
+
+                                    printf("destructure line 479 %s\n", "");
+
+                                    // Return the resulting binary function node
+                                    return funNode;
+                                }
+                                printf("destructure line 484 %s\n", "");
+
+                                // Increment *open*
+                                open = open->next;
+                            }
+                            printf("destructure line 490 %s\n", "");
+
+                            printf("Error! There should be a comma in the binary function %s\n", "");
+                            return NULL;
+
+                        } // Unary function case
+                        else if (open->prev != NULL && open->prev->this->type == UNA)
+                        {
+                            printf("destructure line 498 %s\n", "");
+
+                            Node *funNode = open->prev->this;
+
+                            printf("destructure line 502 %s\n", "");
+
+                            // Only has one branch: Left, it is 1 layer above
+                            Node *left = parse(curr->prev, curLayer + 1, maxLayer, newUntil);
+
+                            printf("destructure line 507 %s\n", "");
+
+                            // Connect the branch to the left
+                            funNode->left = left;
+
+                            printf("destructure line 512 %s\n", "");
+
+                            // Return the resulting binary function node
+                            return funNode;
+                        }
+                    }
+
+                    printf("destructure line 519 %s\n", "");
+
+                    // Decrement to the previous token
+                    open = open->prev;
+                }
+                printf("destructure line 524 %s\n", "");
+            }
+
+            printf("destructure line 528 %s\n", "");
+
+            // Decrement to the previous token
+            curr = curr->prev;
+        }
+        printf("destructure line 533 %s\n", "");
+
         return NULL;
     }
 }
-
-// Head of the layer and the layer number
-int parseUntil(Token *layHead, int curLayer, int untilToken)
-{
-    if (curLayer != 0 && layHead->prev != NULL && layHead->prev->this->type != PAR)
-    {
-        printf("destructure line 248: %s\n", "Error: layer change w/o a paranthesis");
-        return 1;
-    }
-
-    // If we are in a binary function paranthesis
-    if (curLayer != 0 && layHead->prev != NULL && layHead->prev->prev != NULL &&
-        layHead->prev->prev->this->type == BIN)
-    {
-    }
-}
-

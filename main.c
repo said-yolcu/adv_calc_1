@@ -36,7 +36,7 @@ int main(int argc, char const *argv[])
     // Give storage to head
     head = (Token *)malloc(sizeof(Token));
 
-    tokenize(head, updatedLine, 0);
+    int maxLayer = tokenize(head, updatedLine, 0);
 
     printf("line %d\n", 26);
 
@@ -62,7 +62,7 @@ int main(int argc, char const *argv[])
 
     // Do not forget, we are transversing the linked list
     // backwards while parsing
-    Node *root = parse(tail, 0, 0, head->number);
+    Node *root = parse(tail, 0, maxLayer, head->number);
 
     // Print root node
     // printf("root type %d: <%s>\n",
@@ -88,7 +88,7 @@ int main(int argc, char const *argv[])
     // }
 
     // Print node tree
-    printNodeTree(root, "", 0);
+    printNodeTree(root, 0);
 
     printf("line 74%s\n", "");
 

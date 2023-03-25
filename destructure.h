@@ -3,7 +3,7 @@
 
 #include "definitions.h"
 
-void tokenize(Token *head, char *line, int begin);
+int tokenize(Token *head, char *line, int begin);
 Node *parse(Token *tail, int startLayer, int maxLayer, int until);
 
 #endif
