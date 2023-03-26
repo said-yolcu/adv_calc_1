@@ -5,5 +5,6 @@
 
 int tokenize(Token *head, char *line, int begin);
 Node *parse(Token *tail, int startLayer, int maxLayer, int until);
+long calculate(Node *root);
 
 #endif

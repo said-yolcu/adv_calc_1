@@ -38,7 +38,7 @@ int main(int argc, char const *argv[])
 
     int maxLayer = tokenize(head, updatedLine, 0);
 
-    printf("line %d\n", 26);
+    // printf("line %d\n", 26);
 
     int numToken = 0;
 
@@ -90,7 +90,13 @@ int main(int argc, char const *argv[])
     // Print node tree
     printNodeTree(root, 0);
 
-    printf("line 74%s\n", "");
+    // Calculate the result
+    long result = calculate(root);
+
+    // Print the calculation result
+    printf("The result is %ld with hex %lx\n", result, result);
+
+    // printf("line 74%s\n", "");
 
     freeTokenStorage(head);
     return 0;
