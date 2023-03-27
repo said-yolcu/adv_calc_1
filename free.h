@@ -5,5 +5,6 @@
 
 void freeTokenStorage(Token *head);
 void freeNodeStorage(Node *root);
+void freeVariables(Variable *first);
 
 #endif

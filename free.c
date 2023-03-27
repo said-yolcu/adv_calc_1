@@ -5,28 +5,27 @@
 
 void freeNodeStorage(Node *root);
 
-// The structure of these functions need to be changed, because the nodes will
-// finally be collected under a single Token
-
+// Free Token linked list
 void freeTokenStorage(Token *head)
 {
-    if (head != NULL && head->next != NULL)
+    if (head == NULL)
     {
-        // Free the succeeding Tokens
-        freeTokenStorage(head->next);
+        return;
     }
 
-    if (head != NULL)
-    {
-        // Free this node tree
-        // freeNodeStorage(head->this);
-        free(head->this);
+    // Free the succeeding Tokens
+    freeTokenStorage(head->next);
 
-        // Free "head" token
-        free(head);
-    }
+    // Free this node tree
+    free(head->this);
+
+    // Free "head" token
+    free(head);
+
+    head = NULL;
 }
 
+// Free Node tree
 void freeNodeStorage(Node *root)
 {
     if (root == NULL)
@@ -42,4 +41,24 @@ void freeNodeStorage(Node *root)
 
     // Free "root"
     free(root);
+
+    root = NULL;
+}
+
+// Free variable linked list
+void freeVariables(Variable *first)
+{
+    if (first == NULL)
+    {
+        return;
+    }
+
+    // Free succeeding variables
+    freeVariables(first->next);
+
+    // Then, free this variable
+    free(first);
+
+    // Do not let any dangling pointer
+    first = NULL;
 }

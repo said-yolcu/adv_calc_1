@@ -1,6 +1,7 @@
 
 #include <string.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 #include "definitions.h"
 
@@ -49,4 +50,31 @@ int max(int a, int b)
     {
         return b;
     }
+}
+
+// Parse assignment. Return true if it is indeed an assignment, false otherwise
+bool checkAsg(Token *head)
+{
+    // If it is an assignment statement
+    if (head != NULL && head->this != NULL && head->this->type == VAR &&
+        head->next != NULL && head->next->this != NULL &&
+        head->next->this->type == ASG)
+    {
+        return true;
+    }
+
+    return false;
+}
+
+void printVariables(Variable *first)
+{
+    if (first == NULL)
+    {
+        return;
+    }
+
+    printf("Variable with name <%s> has value <%ld>\n",
+           first->name, first->value);
+
+    printVariables(first->next);
 }

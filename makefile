@@ -5,8 +5,8 @@ default: a.out
 
 # Link to create "a.out", notice that even though "utilities" is included in 
 # "destructure.c", it is linked here, during the creation of executable
-a.out: main.o destructure.o free.o utilities.o
-	$(CC) -o a.out main.o destructure.o free.o utilities.o
+a.out: main.o destructure.o free.o utilities.o variable.o
+	$(CC) -o a.out main.o destructure.o free.o utilities.o variable.o
 
 # Compile and assemble to create main.c
 main.o: main.c 
@@ -20,6 +20,9 @@ free.o: free.c
 
 utilities.o: utilities.c 
 	$(CC) -c utilities.c 
+
+variable.o: variable.c 
+	$(CC) -c variable.c
 
 
 

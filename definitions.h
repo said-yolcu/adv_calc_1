@@ -20,7 +20,8 @@ typedef struct Nodes
         UNA, // 3 Unary Function: not
         COM, // 4 Comma
         PAR, // 5 Parantheses
-        NUM  // 6 Number
+        NUM, // 6 Number
+        ASG  // 7 Assignment
     } type;
 
     char name[MAX_NAME];
@@ -45,5 +46,18 @@ typedef struct Tokens
 
     Node *this; // Pointer to this node
 } Token;
+
+// Variable structure
+typedef struct Variables
+{
+    // Name of the variable
+    char name[MAX_NAME]; 
+
+    // Value of the variable. Do not forget it is LONG not INT
+    long value; 
+
+    // Pointer to next variable
+    struct Variables * next;
+}Variable;
 
 #endif
