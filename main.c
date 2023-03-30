@@ -173,6 +173,16 @@ int prompter(char *fullLine)
 
     fullLine[len - 1] = NULL_CHAR;
 
+    // Ignore the comments by making *%* a null char
+    for(int i =0; i< len; i++)
+    {
+        if(fullLine[i]== '%')
+        {
+            fullLine[i]=NULL_CHAR;
+            break;
+        }
+    }
+
     return 0;
 }
 
