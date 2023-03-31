@@ -10,17 +10,17 @@ Variable *setVariable(Variable *first, char *varName, long value)
 {
     Variable *curr;
 
-    printf("Variable.c line 13 %s\n", "");
+    // printf("Variable.c line 13 %s\n", "");
 
     // Iterate over variables
     for (curr = first; curr != NULL && curr->next != NULL; curr = curr->next)
     {
-        printf("Variable.c line 18 %s\n", "");
+        // printf("Variable.c line 18 %s\n", "");
 
         // Variable with the same name already exists
         if (strcmp(curr->name, varName) == 0)
         {
-            printf("Variable.c line 23 %s\n", "");
+            // printf("Variable.c line 23 %s\n", "");
 
             curr->value = value;
             return first;
@@ -30,7 +30,7 @@ Variable *setVariable(Variable *first, char *varName, long value)
     // Last variable is certainly empty
     if ( strcmp(curr->name, "") == 0)
     {
-        printf("Variable.c line 32 %s\n", "");
+        // printf("Variable.c line 32 %s\n", "");
 
         // Set the name and value
         strcpy(curr->name, varName);
@@ -62,15 +62,15 @@ long getVariable(Variable *first, char *varName)
 {
     Variable *curr;
 
-    printf("Variable.c line 49 %s\n", "");
+    // printf("Variable.c line 49 %s\n", "");
     for (curr = first; curr != NULL; curr = curr->next)
     {
-        printf("Variable.c line 52 %s\n", "");
-        printf("variable.c curr->name: %s, varName: %s\n", curr->name, varName);
+        // printf("Variable.c line 52 %s\n", "");
+        // printf("variable.c curr->name: %s, varName: %s\n", curr->name, varName);
 
         if (strcmp(curr->name, varName) == 0)
         {
-            printf("Variable.c line 57 %s\n", "");
+            // printf("Variable.c line 57 %s\n", "");
             return curr->value;
         }
     }

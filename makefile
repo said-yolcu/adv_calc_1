@@ -1,12 +1,12 @@
 # Default compiler is gcc
 CC = gcc
 
-default: a.out
+default: advcalc
 
-# Link to create "a.out", notice that even though "utilities" is included in 
+# Link to create "advcalc", notice that even though "utilities" is included in 
 # "destructure.c", it is linked here, during the creation of executable
-a.out: main.o destructure.o free.o utilities.o variable.o
-	$(CC) -o a.out main.o destructure.o free.o utilities.o variable.o
+advcalc: main.o destructure.o free.o utilities.o variable.o
+	$(CC) -o advcalc main.o destructure.o free.o utilities.o variable.o
 
 # Compile and assemble to create main.c
 main.o: main.c 
@@ -28,4 +28,4 @@ variable.o: variable.c
 
 # To clean, type "make clean" to the terminal
 clean:
-	$(RM) a.out *.o 
+	$(RM) a.out *.o advcalc

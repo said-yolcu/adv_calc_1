@@ -1,9 +1,9 @@
 #ifndef DEFINITIONS_H
 #define DEFINITIONS_H
 
-#define LINE_LENGTH 100 // Including the terminating nullchar
+#define LINE_LENGTH 257 // Including the terminating nullchar
 #define NULL_CHAR '\0'
-#define MAX_NAME 20 // Max length of the variable name. May reset later
+#define MAX_NAME 40 // Max length of the variable name. May reset later
 
 // Cannot define a global variable in a header that would be included in multiple
 // files. Multiple *definitions* is not allowed. But we can *declare* it multiple
