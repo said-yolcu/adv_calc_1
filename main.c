@@ -141,6 +141,8 @@ int main(int argc, char const *argv[])
         }
     }
 
+
+    // Free the dynamically allocated storage
     freeTokenStorage(head);
     freeVariables(first);
     return 0;

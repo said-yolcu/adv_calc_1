@@ -8,8 +8,6 @@
 // Print node tree in reverse (root at the bottom)
 void printNodeTree(Node *root, int depth)
 {
-    static int num = 0;
-
     if (root == NULL)
     {
         return;
@@ -27,8 +25,6 @@ void printNodeTree(Node *root, int depth)
     printf("<%s>\n", root->name);
 
     printNodeTree(root->right, depth + 1);
-
-    num++;
 }
 
 int max(int a, int b)
