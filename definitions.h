@@ -29,8 +29,6 @@ typedef struct Nodes
     struct Nodes *left;  // Node on the left
     struct Nodes *right; // Node on the rigth
 
-    struct Tokens *testLeft;  // Token head on the left
-    struct Tokens *testRight; // Token head on the right
 } Node;
 
 // Token structure, each token consists of a Node tree
