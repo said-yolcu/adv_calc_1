@@ -8,20 +8,20 @@ default: advcalc
 advcalc: main.o destructure.o free.o utilities.o variable.o
 	$(CC) -o advcalc main.o destructure.o free.o utilities.o variable.o
 
-# Compile and assemble to create main.c
-main.o: main.c 
+# Compile and assemble to create main.o
+main.o: main.c definitions.h
 	$(CC) -c main.c
 
-destructure.o: destructure.c 
+destructure.o: destructure.c definitions.h
 	$(CC) -c destructure.c 
 
-free.o: free.c 
+free.o: free.c definitions.h
 	$(CC) -c free.c 
 
-utilities.o: utilities.c 
+utilities.o: utilities.c definitions.h
 	$(CC) -c utilities.c 
 
-variable.o: variable.c 
+variable.o: variable.c definitions.h
 	$(CC) -c variable.c
 
 

@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -97,18 +98,20 @@ int main(int argc, char const *argv[])
         // Check if it is an assignment statement
         if (isAsg)
         {
+            // printf("It is an assignment\n");
             strcpy(varName, head->this->name);
 
             // If there is nothing after assignment operator
             if (head->next->next == NULL)
             {
-                printf("Error!%s\n", "");
+                error();
             }
             until = head->next->next->number;
         }
         // If it is not an assignment
         else
         {
+            // printf("It is not an assignment\n");
             until = head->number;
         }
 
@@ -121,7 +124,6 @@ int main(int argc, char const *argv[])
         {
             continue;
         }
-
 
         // Calculate the result. Result is the right-hand side in the case of
         // assignment
@@ -140,7 +142,6 @@ int main(int argc, char const *argv[])
             printf("%ld\n", result);
         }
     }
-
 
     // Free the dynamically allocated storage
     freeTokenStorage(head);
@@ -195,13 +196,22 @@ int prompter(char *fullLine)
         return -3;
     }
 
+    // printf("line 199\n");
 
     // Ignore the comments by making *%* a null char
     for (int i = 0; i < len; i++)
     {
-        if (lineCopy[i] == '%')
+        // printf("in for loop char : <%c>\n", fullLine[i]);
+
+        if (fullLine[i] == '%')
         {
-            lineCopy[i] = NULL_CHAR;
+            fullLine[i] = NULL_CHAR;
+            // printf("Comment detected\n");
+
+            if (i == 0)
+            {
+                retSta = -3;
+            }
             break;
         }
     }
@@ -236,9 +246,9 @@ int deleteSpaces(char *updatedLine, char *rawLine)
                 // If there are alphanumerical chars on the both sides of a blank
                 // it results in error. Variables, numbers, and functions should
                 // be separated by operators or parantheses
-                
+
                 // Blank between alphanumerical characters
-                printf("Error! %s\n", "");
+                error();
                 return -1;
             }
 

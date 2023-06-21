@@ -239,7 +239,7 @@ int tokenize(Token *head, char *line, int begin)
         else
         {
             // printf("Error! Invalid character %c at position %d\n", line[i], i);
-            printf("Error! %s\n","");
+            error();
             return -1;
         }
 
@@ -294,7 +294,7 @@ Node *parse(Token *tail, int startLayer, int maxLayer, int until)
                         if (curr->prev == NULL)
                         {
                             // printf("Error! No expression before operator %s\n", operators[opr]);
-                            printf("Error! %s\n", "");
+                            error();
                             return NULL;
                         }
 
@@ -311,7 +311,7 @@ Node *parse(Token *tail, int startLayer, int maxLayer, int until)
                         if (curr->next == NULL || curr->next->this == NULL)
                         {
                             // printf("Error! No expression after operator %s\n", operators[opr]);
-                            printf("Error! %s\n", "");
+                            error();
                             return NULL;
                         }
 
@@ -335,6 +335,21 @@ Node *parse(Token *tail, int startLayer, int maxLayer, int until)
 
                         return curr->this;
                     }
+
+                    // There should not be any assignment here, as we are only parsing the
+                    // right-side of assignment
+                    if (curr->this->type == ASG)
+                    {
+                        error();
+                        return NULL;
+                    }
+
+                    // We should not encounter any commas before parsing parantheses
+                    if (curr->this->type == COM)
+                    {
+                        error();
+                        return NULL;
+                    }
                 }
 
                 // Point to the previous token
@@ -355,7 +370,7 @@ Node *parse(Token *tail, int startLayer, int maxLayer, int until)
                 if (strcmp(curr->this->name, ")") != 0)
                 {
                     // printf("Error! Opening paranthesis w/o a closing paranthesis %s\n", "");
-                    printf("Error!%s\n", "");
+                    error();
                     return NULL;
                 }
 
@@ -423,7 +438,7 @@ Node *parse(Token *tail, int startLayer, int maxLayer, int until)
 
                             // If there is no comma, print ERROR
                             // printf("Error! There should be a comma in the binary function %s\n", "");
-                            printf("Error! %s\n", "");
+                            error();
                             return NULL;
                         }
                         // Unary function case
@@ -461,7 +476,7 @@ Node *parse(Token *tail, int startLayer, int maxLayer, int until)
 
                 // No opening paranthesis are found corresponding to an existing closing paranthesis
                 // printf("Error! No opening paranthesis found %s\n", "");
-                printf("Error! %s\n", "");
+                error();
                 return NULL;
             }
 
@@ -487,13 +502,13 @@ Node *parse(Token *tail, int startLayer, int maxLayer, int until)
             else
             {
                 // printf("Error! Single token must be a variable or number %s\n", "");
-                printf("Error! %s\n", "");
+                error();
                 return NULL;
             }
         }
 
         // printf("Error! At this point we must have a single token %s\n", "");
-        printf("Error! %s\n", "");
+        error();
         return NULL;
     }
 }

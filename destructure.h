@@ -1,7 +1,7 @@
 #ifndef DESTRUCTURE_H
 #define DESTRUCTURE_H
 
-#include <stdbool.h>
+// #include <stdbool.h>
 
 #include "definitions.h"
 

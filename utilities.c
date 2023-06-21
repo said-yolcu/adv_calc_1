@@ -65,3 +65,8 @@ void printVariables(Variable *first)
 
     printVariables(first->next);
 }
+
+void error()
+{
+    printf("Error!\n");
+}
